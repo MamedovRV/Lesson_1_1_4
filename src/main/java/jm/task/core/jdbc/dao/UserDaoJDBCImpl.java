@@ -10,20 +10,17 @@ import java.util.List;
 import java.util.Scanner;
 
 public class UserDaoJDBCImpl implements UserDao {
-    private final String url = "jdbc:mysql://127.0.0.1:3306/users";
-    private static final String user = "root";
-    private static final String pass = "Cvtybnmgfhjkm1!";
-    Connection connection;
+    private Connection connection;
+    private Util util;
 
     public UserDaoJDBCImpl() {
-        Util util = new Util();
-       connection = util.getConnection();
+        util = new Util();
+        connection = util.getConnection();
     }
 
     private void StUpdate(String sql){
         try {
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(sql);
+            connection.prepareStatement(sql).executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -37,23 +34,19 @@ public class UserDaoJDBCImpl implements UserDao {
                 "PRIMARY KEY (idUsers))";
 
         StUpdate(sql);
-
-
     }
 
     public void dropUsersTable() {
-
-
         String sql = "DROP TABLE if exists users" ;
 
         StUpdate(sql);
-
     }
 
     public void saveUser(String name, String lastName, byte age) {
         String d = "','";
         String sql = "insert into users (name, lastName, age) " +
                 "values ('" + name + d + lastName + d + String.valueOf(age)+ "')";
+
         StUpdate(sql);
     }
 
@@ -67,12 +60,11 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public List<User> getAllUsers() {
         String quary = "select * from users";
-        Statement statement = null;
         List<User> result = new ArrayList<>();
-        try {
-            statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(quary);
 
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(quary);
+            ResultSet resultSet = preparedStatement.executeQuery(quary);
 
             while (resultSet.next()) {
                 User user = new User();

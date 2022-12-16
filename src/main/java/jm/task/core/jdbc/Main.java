@@ -10,12 +10,8 @@ import java.util.List;
 
 
 public class Main {
-    private static final String HOST = "jdbc:mysql://127.0.0.1:3306/users";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "Cvtybnmgfhjkm1!";
 
-    public static void main(String[] args) throws SQLException {
-        List<User> result = new ArrayList<>();
+    public static void main(String[] args) {
         UserServiceImpl userService = new UserServiceImpl();
 
         userService.createUsersTable();

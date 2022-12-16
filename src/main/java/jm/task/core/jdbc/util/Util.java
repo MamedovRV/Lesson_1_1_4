@@ -23,4 +23,16 @@ public class Util {
     public Connection getConnection() {
         return connection;
     }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public static String getPass() {
+        return pass;
+    }
+
+    public static String getUser() {
+        return user;
+    }
 }
